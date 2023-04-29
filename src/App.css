@@ -1,0 +1,204 @@
+.list_cont{
+  height: 625px;
+  position: relative;
+  overflow-y: auto;
+}
+.input_div{
+  position: relative;
+}
+.input_div svg{
+  position: absolute;
+  top: 33px;
+  right: 10px;
+  cursor: pointer;
+}
+.input_div input{
+  padding-right: 44px;
+}
+.input{
+  cursor: pointer;
+}
+.css-1wc848c-MuiFormHelperText-root {
+  margin-left: 3px !important;
+}
+.reg_content{
+  margin: 0;
+  padding: 0;
+}
+.reg_center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.reg_center > .input{
+  position: absolute;
+  top: 259px;
+}
+.register input[type="checkbox"]{
+  font-size: 30px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+.list_cont label,
+.modal-body label {
+  font-weight: 600;
+}
+.modal-body input{
+  width: 220px;
+  padding: 2.5px 7px;
+}
+.register input[type="text"]{
+  border-radius: 15px;
+  line-height: 25px;
+  border: 1px solid rgb(58, 173, 250);
+  outline: rgb(26, 160, 250);
+}
+.back__btn {
+  float: end;
+  font-size: 13px;
+  color: #1976d2;
+  text-decoration: underline;
+}
+.add__icon {
+  bottom: 30px;
+  right: 30px;
+  font-size: 60px !important;
+  position: absolute;
+  cursor: pointer;
+}
+.reg_center > .input > label{
+  margin-top: 7px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.bc{
+  top: 326px !important;
+}
+.b1{
+  left: 78px !important;
+}
+.b2{
+  left: 122px !important;
+}
+.b3{
+  left: 168px !important;
+}
+.b4{
+  left: 203px !important;
+}
+.b5{
+  left: 230px !important;
+}
+.b6{
+  left: 260px !important;
+}
+.b7{
+  left: 288px !important;
+}
+.b8{
+  left: 314px !important;
+}
+.b9{
+  left: 346px !important;
+}
+.b10{
+  left: 372px !important;
+}
+.b11{
+  left: 400px !important;
+}
+.b12{
+  left: 431px !important;
+}
+.b13{
+  left: 457px !important;
+}
+.b14{
+  left: 493px !important;
+}
+.b15{
+  left: 538px !important;
+}
+.b16{
+  left: 582px !important;
+}
+
+.c1{
+  left: 78px !important;
+}
+.c2{
+  left: 122px !important;
+}
+.c3{
+  left: 164px !important;
+}
+.c4{
+  left: 203px !important;
+}
+.c5{
+  left: 233px !important;
+}
+.c6{
+  left: 266px !important;
+}
+.c7, .c8, .c9, .c10 {
+  top: 319px !important;
+}
+.c7{
+  left: 295px !important;
+}
+.c8{
+  left: 317.7px !important;
+}
+.c9{
+  left: 341px !important;
+}
+.c10{
+  left: 364px !important;
+}
+.c11{
+  left: 393px !important;
+}
+.c12{
+  left: 427px !important;
+}
+.c13{
+  left: 457px !important;
+}
+.c14{
+  left: 496px !important;
+}
+.c15{
+  left: 538px !important;
+}
+.c16{
+  left: 584px !important;
+}
+
+.info_item {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 20px;
+}
+.list__item {
+  display: block;
+  padding: 0 20px;
+  cursor: pointer;
+  font-weight: 600;
+  position: relative;
+  border-bottom: 1px solid #e9e9e9;
+}
+.menu__btn {
+  position: absolute;
+  right: 0;
+  top: -8px;
+}
+.check__group label{
+  border-bottom: 1px solid rgb(124, 124, 124);
+}
+.css-j204z7-MuiFormControlLabel-root {
+  margin: 0 !important;
+  padding: 0 !important;
+}
