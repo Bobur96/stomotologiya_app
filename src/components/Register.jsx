@@ -113,17 +113,22 @@ const Register = () => {
   }
 
   const handleSave = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/register/create_patient`,{
-      method: "POST",
-      headers: { token: sessionStorage.getItem('token') },
-      body: JSON.stringify({
+    axios.post(`${process.env.REACT_APP_API_URL}/register/create_patient`,
+      {
         first_name: query('#first_name').value,
         last_name: query('#last_name').value,
         address: query('#address').value,
         phone_number: query('#phone').value,
-      })
-    }).then(res => res.json())
-    .then(res => closeRef.current.click())
+      }, { headers: { token: sessionStorage.getItem('token') },
+    })
+    .then(res => {
+      getPatiens()
+      closeRef.current.click()
+      query('#first_name').value = ''
+      query('#last_name').value = ''
+      query('#address').value = ''
+      query('#phone').value = ''
+    })
     .catch( err => toast.error('Ann error occured!'))
 
   };
@@ -269,7 +274,7 @@ const Register = () => {
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={handleSave}
+                onClick={()=>handleSave()}
               >
                 Save
               </button>
