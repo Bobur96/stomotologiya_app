@@ -195,7 +195,7 @@ const Doctor = () => {
               style={{ top: "490px", right: "265px", width: "145px" }}
               onClick={handleSubmit}
             >
-              NEXT
+              SUBMIT
             </button>
           </div>
           <div className="col-4 reg_info">
