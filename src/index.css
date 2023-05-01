@@ -19,3 +19,7 @@ code {
   width: 99.1vw;
   height: 100vh;
 }
+
+input[type="radio"] {
+  margin-right: 8px;
+}
