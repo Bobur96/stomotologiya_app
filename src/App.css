@@ -1,5 +1,5 @@
 .list_cont{
-  height: 625px;
+  height: 556px;
   position: relative;
   overflow-y: auto;
 }
@@ -33,7 +33,7 @@
 }
 .reg_center > .input{
   position: absolute;
-  top: 259px;
+  top: 224px;
 }
 .register input[type="checkbox"]{
   font-size: 30px;
@@ -74,7 +74,7 @@
   cursor: pointer;
 }
 .bc{
-  top: 326px !important;
+  top: 292px !important;
 }
 .b1{
   left: 78px !important;
@@ -144,7 +144,7 @@
   left: 266px !important;
 }
 .c7, .c8, .c9, .c10 {
-  top: 319px !important;
+  top: 285px !important;
 }
 .c7{
   left: 295px !important;

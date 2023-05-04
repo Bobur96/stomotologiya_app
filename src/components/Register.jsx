@@ -67,21 +67,22 @@ const Register = () => {
       .then(res => tablee = res )
       .catch( err => toast.error('Ann error occured!'))
 
-      await fetch(`${process.env.REACT_APP_API_URL}/register/create_treatmentteeth?patient_id=${patientAnswer}&attached_id=${doc}`,{
-        method: "POST",
+      await axios.post(`${process.env.REACT_APP_API_URL}/register/create_history`,
+      {
+        treatmentteeth: tablee,
+        tooth_id: toothAnswer,
+        complaint_id: deteilAnswer,
+      } ,{
         headers: { token: sessionStorage.getItem('token') },
-        body: JSON.stringify([{
-          treatmentteeth: tablee,
-          tooth_id: toothAnswer,
-          complaint_id: deteilAnswer,
-        }])
-      }).then(res => res.json())
-      .then(res => tablee = res )
-      .catch( err => toast.error('Ann error occured!'))
-        closeRef2.current.click();
+      })
+      .then(res => {
+        toast.success("Succesfully saved!")
         queryAll('input').forEach(el => {
           el.checked = false;
         }); setDoc('')
+      })
+      .catch( err => toast.error('Ann error occured!'))
+        
     }
     else {
       toast.error('All field required!')

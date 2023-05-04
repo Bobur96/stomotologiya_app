@@ -36,6 +36,11 @@ export default function Login() {
   const [visibleIcon, setVisibleIcon] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
 
+  React.useEffect(()=>{
+    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('role')
+  }, [])
+
   const handleSubmit = (event) => {
     setLoading(true);
     const data = { username: event.email, password: event.password };
@@ -45,6 +50,7 @@ export default function Login() {
       .then((res) => {
         console.log(res.data[0].role);
         sessionStorage.setItem("token", res.data[1]);
+        sessionStorage.setItem("role", res.data[0].role);
         navigate(`/${res.data[0].role}`);
         setLoading(false);
       })

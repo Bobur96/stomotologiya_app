@@ -1,23 +1,22 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import IconButton from '@mui/material/IconButton';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
-import Checkbox from '@mui/material/Checkbox';
-import TextField from '@mui/material/TextField';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import IconButton from "@mui/material/IconButton";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import Checkbox from "@mui/material/Checkbox";
+import TextField from "@mui/material/TextField";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const inpt = [18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28];
 const inpt2 = [48, 47, 46, 45, 44, 43, 42, 41, 31, 32, 33, 34, 35, 36, 37, 38];
 
 const Doctor = () => {
-
   const queryAll = document.querySelectorAll.bind(document);
   const query = document.querySelector.bind(document);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -25,112 +24,82 @@ const Doctor = () => {
 
   const closeRef = useRef();
   const closeRef2 = useRef();
-  const [doc, setDoc] = useState('');
+  const [doc, setDoc] = useState("");
 
-  const [patient, setPatient] = useState([])
-  const [doctors, setDoctors] = useState([])
-  const [details, setDetails] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [patient, setPatient] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+  const [details, setDetails] = useState([]);
+  const [treatments, setTreatments] = useState([]);
+  const [historyDay, setHistoryDay] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const response = async () => {
-      setLoading(true)
-      await getPatiens()
-      await getDoctors()
-      await getDetails()
-      setLoading(false)
-    }
-    response()
-  }, [])
+      setLoading(true);
+      await getPatiens();
+      await getDetails();
+      await getTreatments();
+      setLoading(false);
+    };
+    response();
+  }, []);
 
   const handleSubmit = async () => {
-    let patientAnswer = '';
-    let tablee = '';
+    let patientAnswer = "";
+    let tablee = "";
     const toothAnswer = [];
     const deteilAnswer = [];
-    queryAll('.patient input').forEach(el => {
-      if(el.checked) patientAnswer = el.value;
-    })
-    queryAll('.tooth input').forEach(el => {
-      if(el.checked) toothAnswer.push(el.value)
-    })
-    queryAll('.details_inp').forEach(el => {
-      if(el.checked) deteilAnswer.push(el.value)
-    })
-    
-    if(doc !== '' && patientAnswer !== '') {
-      console.log('aa')
-      await fetch(`${process.env.REACT_APP_API_URL}/register/create_treatmentteeth?patient_id=${patientAnswer}&attached_id=${doc}`,{
-        method: "POST",
-        headers: { token: sessionStorage.getItem('token') }
-      }).then(res => res.json())
-      .then(res => tablee = res )
-      .catch( err => toast.error('Ann error occured!'))
-
-      await fetch(`${process.env.REACT_APP_API_URL}/register/create_treatmentteeth?patient_id=${patientAnswer}&attached_id=${doc}`,{
-        method: "POST",
-        headers: { token: sessionStorage.getItem('token') },
-        body: JSON.stringify([{
-          treatmentteeth: tablee,
-          tooth_id: toothAnswer,
-          complaint_id: deteilAnswer,
-        }])
-      }).then(res => res.json())
-      .then(res => tablee = res )
-      .catch( err => toast.error('Ann error occured!'))
-        closeRef2.current.click();
-        queryAll('input').forEach(el => {
-          el.checked = false;
-        }); setDoc('')
-    }
-    else {
-      toast.error('All field required!')
-    }
-
-
-
-  }
+    queryAll(".patient input").forEach((el) => {
+      if (el.checked) patientAnswer = el.value;
+    });
+    queryAll(".tooth input").forEach((el) => {
+      if (el.checked) toothAnswer.push(el.value);
+    });
+    queryAll(".details_inp").forEach((el) => {
+      if (el.checked) deteilAnswer.push(el.value);
+    });
+  };
 
   const getPatiens = () => {
-    axios(`${process.env.REACT_APP_API_URL}/register/get_patients`, {
-      headers: { token: sessionStorage.getItem('token') }
-    }).then(res => {console.log(res.data); setPatient(res.data)})
-    .catch( err => console.log(err))
-  }
+    axios(`${process.env.REACT_APP_API_URL}/doctor/get_patients`, {
+      headers: { token: sessionStorage.getItem("token") },
+    })
+      .then((res) => {
+        console.log(res.data);
+        setPatient(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
 
-  const getDoctors = () => {
-    axios(`${process.env.REACT_APP_API_URL}/register/get_doctors`, {
-      headers: { token: sessionStorage.getItem('token') }
-    }).then(res => {console.log(res.data); setDoctors(res.data)})
-    .catch( err => console.log(err))
-  }
-
-  const getDetails = () => {
-    axios(`${process.env.REACT_APP_API_URL}/register/get_dentalComplaints`, {
-      headers: { token: sessionStorage.getItem('token') }
-    }).then(res => {console.log(res.data); setDetails(res.data)})
-    .catch( err => console.log(err))
-  }
-
-  const handleSave = () => {
-    axios.post(`${process.env.REACT_APP_API_URL}/register/create_patient`,
+  const getDetails = (tableName) => {
+    axios(
+      `${process.env.REACT_APP_API_URL}/doctor/get_obj?table_name=${tableName}`,
       {
-        first_name: query('#first_name').value,
-        last_name: query('#last_name').value,
-        address: query('#address').value,
-        phone_number: query('#phone').value,
-      }, { headers: { token: sessionStorage.getItem('token') },
-    })
-    .then(res => {
-      getPatiens()
-      closeRef.current.click()
-      query('#first_name').value = ''
-      query('#last_name').value = ''
-      query('#address').value = ''
-      query('#phone').value = ''
-    })
-    .catch( err => toast.error('Ann error occured!'))
-
+        headers: { token: sessionStorage.getItem("token") },
+      }
+    )
+      .then((res) => {
+        console.log(res.data);
+        setDetails(
+          res.data.map((item) => ({ name: item.name, body: item.price }))
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+  const getTreatments = () => {
+    axios(
+      `${process.env.REACT_APP_API_URL}/doctor/get_obj?table_name=Treatments`,
+      {
+        headers: { token: sessionStorage.getItem("token") },
+      }
+    )
+      .then((res) => {
+        console.log(res.data);
+        setTreatments(
+          res.data.map((item) => ({ name: item.name, body: item.price }))
+        );
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleClick = (event) => {
@@ -140,55 +109,81 @@ const Doctor = () => {
     setAnchorEl(null);
   };
 
+  const handleChange = (id) => {
+    console.log(id)
+    axios(`${process.env.REACT_APP_API_URL}/doctor/get_treatment_day?patient_id=${id}`,
+      { headers: { token: sessionStorage.getItem("token") } }
+    ).then(res => {
+      setHistoryDay(res.data[0])
+      console.log(res.data[0])
+    }).catch(err => setHistoryDay([]))
+  }
+
   return (
     <div className="register">
-      <ToastContainer autoClose={2000}/>
+      <ToastContainer autoClose={2000} />
       <div className="row">
         <div className="col-3 list_cont">
           <h4 className="text-center my-4">Mijozlar ro'yhati</h4>
-          {
-            loading ? <p>loading...</p> : 
+          {loading ? (
+            <p>loading...</p>
+          ) : (
             <>
-              {
-                patient.map((item, i) => (
-                  <span className="list__item patient" key={i}>
-                    <input type="radio" name="patient" id={`${item.id}`} value={item.id} />
-                    <label htmlFor={`${item.id}`}>{item.first_name+'  '+item.last_name}</label>
-                    <div className="menu__btn">
-                      <IconButton aria-haspopup="true" onClick={handleClick}>
-                        <MoreVertIcon />
-                      </IconButton>
-                      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                          <MenuItem>select</MenuItem>
-                          <MenuItem>View karta</MenuItem>
-                      </Menu>
-                    </div>
-                  </span>
-                ))
-              }
-              <AddCircleIcon
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal" 
-                className="add__icon" color="primary"/>
+              
+              {patient.map((item, i) => (
+                <span className="list__item patient" key={i}>
+                  <input
+                    type="radio"
+                    name="patient"
+                    id={`${item.id}`}
+                    value={item.id}
+                    onChange={(e)=> handleChange(item.id)}
+                  />
+                  <label htmlFor={`${item.id}`}>
+                    {item.first_name + "  " + item.last_name}
+                  </label>
+                  <div className="menu__btn">
+                    <IconButton aria-haspopup="true" onClick={handleClick}>
+                      <MoreVertIcon />
+                    </IconButton>
+                    <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                      <MenuItem>select</MenuItem>
+                      <MenuItem>View karta</MenuItem>
+                    </Menu>
+                  </div>
+                </span>
+              ))}
             </>
-          }
-          
+          )}
         </div>
         <div className="col-9 row reg_content">
-          <div className="col-8 reg_center tooth" style={{ background: "#8BB6B3" }}>
-            <img src="tooth.png" alt="" width={600} height={400} />
-            {inpt.map((el, idx) => (
-              <div className={`input b${idx + 1} d-grid`} key={idx}>
-                <label htmlFor={`chkbox${el}`}>{el}</label>
-                <input type="checkbox" id={`chkbox${el}`} value={el} />
-              </div>
-            ))}
-            {inpt2.map((el, idx) => (
-              <div className={`input bc c${idx + 1} d-grid`} key={idx}>
-                <input type="checkbox" id={`chkbox2${el}`} value={el} />
-                <label htmlFor={`chkbox2${el}`}>{el}</label>
-              </div>
-            ))}
+          <div
+            className="col-8 reg_center tooth"
+            style={{ background: "#8BB6B3" }}
+          >
+            {
+              historyDay.length !== 0 &&
+              <>
+                <img src="tooth.png" alt="" width={600} height={400} />
+                {inpt.map((el, idx) => (
+                  historyDay?.tooth_id.map(id => (
+                    <div className={`input b${idx + 1} d-grid`} key={idx}>
+                      <label htmlFor={`chkbox${el}`}>{el}</label>
+                      <input type="checkbox" id={`chkbox${el}`} checked={id == el} value={el} />
+                    </div>
+                  ))
+                ))}
+                {inpt2.map((el, idx) => (
+                  historyDay?.tooth_id.map(id => (
+                    <div className={`input bc c${idx + 1} d-grid`} key={idx}>
+                      <input type="checkbox" id={`chkbox2${el}`} checked={id == el} value={el} />
+                      <label htmlFor={`chkbox2${el}`}>{el}</label>
+                    </div>
+                  ))
+                ))}
+              </>
+            }
+            
 
             <button
               className="btn btn-primary position-absolute"
@@ -199,104 +194,152 @@ const Doctor = () => {
             </button>
           </div>
           <div className="col-4 reg_info">
-              <FormGroup>
-                <h4 className="text-center my-4">Informatsiya</h4>
-                <div className="check__group py-2 ms-2 d-grid">
-                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                Accordion Item #1
-                            </button>
-                            </h2>
-                            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingTwo">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                                Accordion Item #2
-                            </button>
-                            </h2>
-                            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingThree">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                                Accordion Item #3
-                            </button>
-                            </h2>
-                            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
-                            </div>
-                        </div>
+            <FormGroup>
+              <h4 className="text-center my-4">Informatsiya</h4>
+              <div className="check__group py-2 ms-2 d-grid">
+                <div
+                  class="accordion accordion-flush"
+                  id="accordionFlushExample"
+                >
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                      <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne"
+                        aria-expanded="false"
+                        aria-controls="flush-collapseOne"
+                        onClick={() => getDetails("DentalComplaints")}
+                      >
+                        DentalComplaints
+                      </button>
+                    </h2>
+                    <div
+                      id="flush-collapseOne"
+                      class="accordion-collapse collapse"
+                      aria-labelledby="flush-headingOne"
+                      data-bs-parent="#accordionFlushExample"
+                    >
+                      <div className="accordion-body">
+                        {details.map((details) => (
+                          <div className="list__item">
+                            <input
+                              type="checkbox"
+                              className="details_inp"
+                              value={details.id}
+                            />
+                            <label>{details.name}</label>
+                          </div>
+                        ))}
+                      </div>
                     </div>
+                  </div>
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="flush-headingTwo">
+                      <button
+                        className="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseTwo"
+                        aria-expanded="false"
+                        aria-controls="flush-collapseTwo"
+                        onClick={() => getDetails("CleaningAgents")}
+                      >
+                        CleaningAgents
+                      </button>
+                    </h2>
+                    <div
+                      id="flush-collapseTwo"
+                      className="accordion-collapse collapse"
+                      aria-labelledby="flush-headingTwo"
+                      data-bs-parent="#accordionFlushExample"
+                    >
+                      <div className="accordion-body">
+                        {details.map((details) => (
+                          <div className="list__item">
+                            <input
+                              type="checkbox"
+                              className="details_inp"
+                              value={details.id}
+                            />
+                            <label>{details.name}</label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingThree">
+                      <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseThree"
+                        aria-expanded="false"
+                        aria-controls="flush-collapseThree"
+                        onClick={() => getDetails("Fillings")}
+                      >
+                        Fillings
+                      </button>
+                    </h2>
+                    <div
+                      id="flush-collapseThree"
+                      class="accordion-collapse collapse"
+                      aria-labelledby="flush-headingThree"
+                      data-bs-parent="#accordionFlushExample"
+                    >
+                      <div class="accordion-body">
+                        {details.map((details) => (
+                          <div className="list__item">
+                            <input
+                              type="checkbox"
+                              className="details_inp"
+                              value={details.id}
+                            />
+                            <label>{details.name}</label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="flush-heading4">
+                      <button
+                        className="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapse4"
+                        aria-expanded="false"
+                        aria-controls="flush-collapse4"
+                        onClick={() => getDetails("Extractions")}
+                      >
+                        Extractions
+                      </button>
+                    </h2>
+                    <div
+                      id="flush-collapse4"
+                      className="accordion-collapse collapse"
+                      aria-labelledby="flush-heading4"
+                      data-bs-parent="#accordionFlushExample"
+                    >
+                      <div className="accordion-body">
+                        {details.map((details) => (
+                          <div className="list__item">
+                            <input
+                              type="checkbox"
+                              className="details_inp"
+                              value={details.id}
+                            />
+                            <label>{details.name}</label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </FormGroup>
-          </div>
-        </div>
-      </div>
-
-      <div
-        className="modal fade"
-        id="exampleModal"
-        tabIndex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="exampleModalLabel">
-                Add Patient
-              </h1>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body p-0">
-              <form action="" className="w-100 py-4 px-3">
-                <div className="info_item">
-                  <label htmlFor="name1">First name</label>
-                  <input type="text" id="first_name" />
-                </div>
-                <div className="info_item">
-                  <label htmlFor="last_name">Last name</label>
-                  <input type="text" id="last_name" />
-                </div>
-                <div className="info_item">
-                  <label htmlFor="phone">Phone</label>
-                  <input type="text" id="phone" />
-                </div>
-                <div className="info_item">
-                  <label htmlFor="address">Address</label>
-                  <input type="text" id="address" />
-                </div>
-              </form>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                ref={closeRef}
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={()=>handleSave()}
-              >
-                Save
-              </button>
-            </div>
+              </div>
+            </FormGroup>
           </div>
         </div>
       </div>

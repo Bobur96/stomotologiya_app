@@ -17,9 +17,22 @@ code {
   padding: 0;
   box-sizing: border-box;
   width: 99.1vw;
-  height: 100vh;
+  height: 80vh;
 }
 
 input[type="radio"] {
   margin-right: 8px;
+}
+a{
+  display: flex;
+  margin: 0 4px;
+  padding: 6px 13px;
+  border-radius: 4px;
+  align-self: center;
+  color: white !important;
+  text-decoration: none !important;
+}
+a.active{
+  color: yellow !important;
+  background-color: black !important;
 }
