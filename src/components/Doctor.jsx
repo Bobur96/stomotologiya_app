@@ -89,15 +89,10 @@ const Doctor = () => {
     };
 
     if (historyId) {
-      await axios
-        .put(
-          `${process.env.REACT_APP_API_URL}/doctor/update_history?treatmentteeth_id=${treatmentteeth}`,
-          body,
-          {
-            headers: { token: sessionStorage.getItem("token") },
-          }
-        )
-        .then((res) => {
+      console.log(body)
+      await axios.put(`${process.env.REACT_APP_API_URL}/doctor/update_history?treatmentteeth_id=${treatmentteeth}`,
+          body, { headers: { token: sessionStorage.getItem("token") }}
+        ).then((res) => {
           toast.success("Succesfully saved!");
           queryAll("input").forEach((el) => (el.checked = false));
         })

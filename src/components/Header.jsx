@@ -3,7 +3,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
-import AdbIcon from "@mui/icons-material/Adb";
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { NavLink, useNavigate } from "react-router-dom";
 
 function Header() {
@@ -25,7 +25,7 @@ function Header() {
         <AppBar position="static">
           <Container maxWidth="xl">
             <Toolbar disableGutters>
-              <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+              <AccountBalanceIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
               <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                 {role == "register" && <NavLink to="/register">Register</NavLink>}
                 {role == "doctor" && <NavLink to="/doctor">Doctor</NavLink>}
