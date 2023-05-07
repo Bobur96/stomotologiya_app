@@ -27,8 +27,11 @@ const Doctor = () => {
   const [doc, setDoc] = useState("");
 
   const [patient, setPatient] = useState([]);
-  const [doctors, setDoctors] = useState([]);
   const [details, setDetails] = useState([]);
+  const [cleaning, setCleaning] = useState([]);
+  const [fillings, setFillings] = useState([]);
+  const [extractions, setExtractions] = useState([]);
+  const [dComplains, setDComplains] = useState([]);
   const [treatments, setTreatments] = useState([]);
   const [historyDay, setHistoryDay] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -37,8 +40,10 @@ const Doctor = () => {
     const response = async () => {
       setLoading(true);
       await getPatiens();
-      await getDetails();
-      await getTreatments();
+      await getCleaning();
+      await getDentalComplaints();
+      await getExtractions();
+      await getFillings();
       setLoading(false);
     };
     response();
@@ -63,42 +68,35 @@ const Doctor = () => {
   const getPatiens = () => {
     axios(`${process.env.REACT_APP_API_URL}/doctor/get_patients`, {
       headers: { token: sessionStorage.getItem("token") },
-    })
-      .then((res) => {
-        console.log(res.data);
-        setPatient(res.data);
-      })
+    }).then((res) => setPatient(res.data))
       .catch((err) => console.log(err));
   };
 
-  const getDetails = (tableName) => {
-    axios(
-      `${process.env.REACT_APP_API_URL}/doctor/get_obj?table_name=${tableName}`,
-      {
-        headers: { token: sessionStorage.getItem("token") },
-      }
-    )
-      .then((res) => {
-        console.log(res.data);
-        setDetails(
-          res.data.map((item) => ({ name: item.name, body: item.price }))
-        );
-      })
+  const getCleaning = () => {
+    axios(`${process.env.REACT_APP_API_URL}/doctor/get_obj?table_name=CleaningAgents`, {
+      headers: { token: sessionStorage.getItem("token") },
+    }).then((res) => setCleaning(res.data))
       .catch((err) => console.log(err));
   };
-  const getTreatments = () => {
-    axios(
-      `${process.env.REACT_APP_API_URL}/doctor/get_obj?table_name=Treatments`,
-      {
-        headers: { token: sessionStorage.getItem("token") },
-      }
-    )
-      .then((res) => {
-        console.log(res.data);
-        setTreatments(
-          res.data.map((item) => ({ name: item.name, body: item.price }))
-        );
-      })
+
+  const getFillings = () => {
+    axios(`${process.env.REACT_APP_API_URL}/doctor/get_obj?table_name=Fillings`, {
+      headers: { token: sessionStorage.getItem("token") },
+    }).then((res) => setFillings(res.data))
+      .catch((err) => console.log(err));
+  };
+
+  const getExtractions = () => {
+    axios(`${process.env.REACT_APP_API_URL}/doctor/get_obj?table_name=Extractions`, {
+      headers: { token: sessionStorage.getItem("token") },
+    }).then((res) => setExtractions(res.data))
+      .catch((err) => console.log(err));
+  };
+
+  const getDentalComplaints = () => {
+    axios(`${process.env.REACT_APP_API_URL}/doctor/get_obj?table_name=DentalComplaints`, {
+      headers: { token: sessionStorage.getItem("token") },
+    }).then((res) => setDComplains(res.data))
       .catch((err) => console.log(err));
   };
 
@@ -110,7 +108,6 @@ const Doctor = () => {
   };
 
   const handleChange = (id) => {
-    console.log(id)
     axios(`${process.env.REACT_APP_API_URL}/doctor/get_treatment_day?patient_id=${id}`,
       { headers: { token: sessionStorage.getItem("token") } }
     ).then(res => {
@@ -129,7 +126,6 @@ const Doctor = () => {
             <p>loading...</p>
           ) : (
             <>
-              
               {patient.map((item, i) => (
                 <span className="list__item patient" key={i}>
                   <input
@@ -167,23 +163,22 @@ const Doctor = () => {
                 <img src="tooth.png" alt="" width={600} height={400} />
                 {inpt.map((el, idx) => (
                   historyDay?.tooth_id.map(id => (
-                    <div className={`input b${idx + 1} d-grid`} key={idx}>
+                    <div className={`input b${idx + 1} d-grid`} key={el}>
                       <label htmlFor={`chkbox${el}`}>{el}</label>
-                      <input type="checkbox" id={`chkbox${el}`} checked={id == el} value={el} />
+                      <input type="checkbox" id={`chkbox${el}`} defaultChecked={id === el} value={el} />
                     </div>
                   ))
                 ))}
                 {inpt2.map((el, idx) => (
                   historyDay?.tooth_id.map(id => (
-                    <div className={`input bc c${idx + 1} d-grid`} key={idx}>
-                      <input type="checkbox" id={`chkbox2${el}`} checked={id == el} value={el} />
+                    <div className={`input bc c${idx + 1} d-grid`} key={el}>
+                      <input type="checkbox" id={`chkbox2${el}`} defaultChecked={id === el} value={el} />
                       <label htmlFor={`chkbox2${el}`}>{el}</label>
                     </div>
                   ))
                 ))}
               </>
             }
-            
 
             <button
               className="btn btn-primary position-absolute"
@@ -197,32 +192,28 @@ const Doctor = () => {
             <FormGroup>
               <h4 className="text-center my-4">Informatsiya</h4>
               <div className="check__group py-2 ms-2 d-grid">
-                <div
-                  class="accordion accordion-flush"
-                  id="accordionFlushExample"
-                >
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingOne">
+                <div className="accordion accordion-flush" id="accordionFlushExample">
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="flush-headingOne">
                       <button
-                        class="accordion-button collapsed"
+                        className="accordion-button collapsed"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseOne"
                         aria-expanded="false"
                         aria-controls="flush-collapseOne"
-                        onClick={() => getDetails("DentalComplaints")}
                       >
                         DentalComplaints
                       </button>
                     </h2>
                     <div
                       id="flush-collapseOne"
-                      class="accordion-collapse collapse"
+                      className="accordion-collapse collapse"
                       aria-labelledby="flush-headingOne"
                       data-bs-parent="#accordionFlushExample"
                     >
                       <div className="accordion-body">
-                        {details.map((details) => (
+                        {dComplains.map((details) => (
                           <div className="list__item">
                             <input
                               type="checkbox"
@@ -244,7 +235,6 @@ const Doctor = () => {
                         data-bs-target="#flush-collapseTwo"
                         aria-expanded="false"
                         aria-controls="flush-collapseTwo"
-                        onClick={() => getDetails("CleaningAgents")}
                       >
                         CleaningAgents
                       </button>
@@ -256,7 +246,7 @@ const Doctor = () => {
                       data-bs-parent="#accordionFlushExample"
                     >
                       <div className="accordion-body">
-                        {details.map((details) => (
+                        {cleaning.map((details) => (
                           <div className="list__item">
                             <input
                               type="checkbox"
@@ -269,28 +259,27 @@ const Doctor = () => {
                       </div>
                     </div>
                   </div>
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingThree">
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="flush-headingThree">
                       <button
-                        class="accordion-button collapsed"
+                        className="accordion-button collapsed"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseThree"
                         aria-expanded="false"
                         aria-controls="flush-collapseThree"
-                        onClick={() => getDetails("Fillings")}
                       >
                         Fillings
                       </button>
                     </h2>
                     <div
                       id="flush-collapseThree"
-                      class="accordion-collapse collapse"
+                      className="accordion-collapse collapse"
                       aria-labelledby="flush-headingThree"
                       data-bs-parent="#accordionFlushExample"
                     >
-                      <div class="accordion-body">
-                        {details.map((details) => (
+                      <div className="accordion-body">
+                        {fillings.map((details) => (
                           <div className="list__item">
                             <input
                               type="checkbox"
@@ -312,7 +301,6 @@ const Doctor = () => {
                         data-bs-target="#flush-collapse4"
                         aria-expanded="false"
                         aria-controls="flush-collapse4"
-                        onClick={() => getDetails("Extractions")}
                       >
                         Extractions
                       </button>
@@ -324,7 +312,7 @@ const Doctor = () => {
                       data-bs-parent="#accordionFlushExample"
                     >
                       <div className="accordion-body">
-                        {details.map((details) => (
+                        {extractions.map((details) => (
                           <div className="list__item">
                             <input
                               type="checkbox"
