@@ -36,3 +36,15 @@ a.active{
   color: yellow !important;
   background-color: black !important;
 }
+
+.details_inp {
+  margin-right: 8px;
+}
+.check__group .list__item label{
+  border: none;
+}
+.error {
+  font-size: 18px;
+  color: red;
+  font-weight: bold;
+}
