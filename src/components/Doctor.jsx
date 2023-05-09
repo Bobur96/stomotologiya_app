@@ -1,35 +1,32 @@
 import React, { useEffect, useRef, useState } from "react";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import axios from "axios";
 
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import IconButton from "@mui/material/IconButton";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import FormGroup from "@mui/material/FormGroup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ViewCart from "./ViewCart";
 
 const inpt = [18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28];
 const inpt2 = [48, 47, 46, 45, 44, 43, 42, 41, 31, 32, 33, 34, 35, 36, 37, 38];
 
 const Doctor = () => {
+  
   const queryAll = document.querySelectorAll.bind(document);
   const query = document.querySelector.bind(document);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
 
   const closeRef = useRef();
   const closeRef2 = useRef();
 
   const [edit, setEdit] = useState(false);
   const [patient, setPatient] = useState([]);
+  const [modalID, setModalID] = useState(null);
   const [cleaning, setCleaning] = useState([]);
   const [fillings, setFillings] = useState([]);
   const [treatment, setTreatment] = useState([]);
   const [errorMsg, setErrorMsg] = useState(false);
   const [dComplains, setDComplains] = useState([]);
   const [historyId, setHistoryId] = useState(null);
+  const [modalTittle, setModalTittle] = useState([]);
   const [extractions, setExtractions] = useState([]);
   const [treatmentAns, setTreatmentAns] = useState([]);
   const [treatmentteeth, setTreatmentteeth] = useState(null);
@@ -55,6 +52,7 @@ const Doctor = () => {
     const deteilAnswer = [];
     const fillingAnswer = [];
     const cleaningAnswer = [];
+    const treatmentAnswer = [];
     const extractionAnswer = [];
 
     queryAll(".tooth input").forEach((el) => {
@@ -72,11 +70,17 @@ const Doctor = () => {
     queryAll(".extraction").forEach((el) => {
       if (el.checked) extractionAnswer.push(el.value);
     });
+    queryAll(".treatment").forEach((el) => {
+      if (el.checked) {
+        console.log(el.value)
+        treatmentAnswer.push(el.value);
+      }
+    });
 
     const body = {
       tooth_id: toothAnswer,
       complaint_id: deteilAnswer,
-      treatment_id: treatment,
+      treatment_id: treatmentAnswer,
       filling_id: fillingAnswer,
       cleaning_agent_id: cleaningAnswer,
       extraction_id: extractionAnswer,
@@ -98,19 +102,13 @@ const Doctor = () => {
         })
         .catch((err) => toast.error("Ann error occured!"));
     } else {
-      await axios
-        .post(
-          `${process.env.REACT_APP_API_URL}/doctor/create_history`,
+      await axios.post(`${process.env.REACT_APP_API_URL}/doctor/create_history`,
           create_body,
-          {
-            headers: { token: sessionStorage.getItem("token") },
-          }
-        )
-        .then((res) => {
+          { headers: { token: sessionStorage.getItem("token") }}
+        ).then((res) => {
           toast.success("Succesfully saved!");
           queryAll("input").forEach((el) => (el.checked = false));
-        })
-        .catch((err) => toast.error("Ann error occured!"));
+        }).catch((err) => toast.error("Ann error occured!"));
     }
   };
 
@@ -169,13 +167,6 @@ const Doctor = () => {
       .catch((err) => console.log(err));
   };
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const handleChange = (id) => {
     setEdit(false);
     setHistoryId(null);
@@ -215,6 +206,9 @@ const Doctor = () => {
         res.data[0][0].cleaning_agent_id?.forEach((el) => {
           query(`.inp_cl${el}`).checked = true;
         });
+        res.data[0][0].treatment_id?.forEach((el) => {
+          query(`.inp_tr${el}`).checked = true;
+        });
         queryAll("input").forEach((el) => {
           el.disabled = true;
         });
@@ -243,6 +237,11 @@ const Doctor = () => {
     });
   };
 
+  const handleCard = (id, title) => {
+    setModalID(id)
+    setModalTittle(title)
+  }
+
   return (
     <div className="register">
       <ToastContainer autoClose={2000} />
@@ -266,13 +265,9 @@ const Doctor = () => {
                     {item.first_name + "  " + item.last_name}
                   </label>
                   <div className="menu__btn">
-                    <IconButton aria-haspopup="true" onClick={handleClick}>
-                      <MoreVertIcon />
-                    </IconButton>
-                    <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                      <MenuItem>select</MenuItem>
-                      <MenuItem>View karta</MenuItem>
-                    </Menu>
+                    <span data-bs-toggle="modal" data-bs-target="#exampleModal"
+                      onClick={(e)=>handleCard(item.id, item.first_name+" "+item.last_name)} className="btn_cart"
+                    >view cart</span>
                   </div>
                 </span>
               ))}
@@ -282,13 +277,10 @@ const Doctor = () => {
 
         <div className="col-9 row reg_content">
           
-            <div
-              className="col-8 reg_center tooth"
-              style={{ background: "#8BB6B3" }}
-            >
+            <div className="col-8 reg_center tooth" style={{ background: "#8BB6B3" }}>
               {
                 errorMsg ? 
-                <div className="error">An error occurred</div> :
+                <div className="error">Bu bemor uchun bugungi karta mavjud emas!</div> :
                 <>
                   <img src="tooth.png" alt="" width={600} height={400} />
                     {inpt.map((el, idx) => (
@@ -498,7 +490,7 @@ const Doctor = () => {
                           <div className="list__item" key={itm.id}>
                             <input
                               type="checkbox"
-                              className={`details_inp tratment inp_ex${itm.id}`}
+                              className={`details_inp treatment inp_tr${itm.id}`}
                               value={itm.id}
                             />
                             <label>{itm.name}</label>
@@ -514,6 +506,9 @@ const Doctor = () => {
           </div>
         </div>
       </div>
+
+      <ViewCart title={modalTittle} id={modalID}/>
+
     </div>
   );
 };

@@ -195,7 +195,7 @@ label{
 .menu__btn {
   position: absolute;
   right: 0;
-  top: -8px;
+  top: -1px;
 }
 .check__group label{
   border-bottom: 1px solid rgb(124, 124, 124);

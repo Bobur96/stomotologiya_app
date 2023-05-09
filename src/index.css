@@ -44,7 +44,14 @@ a.active{
   border: none;
 }
 .error {
-  font-size: 18px;
+  font-size: 17px;
   color: red;
   font-weight: bold;
+}
+.btn_cart {
+  border: 1px solid green;
+  font-size: 12px;
+  border-radius: 3px;
+  padding: 1.4px 3.5px 1.8px 3.5px;
+  cursor: pointer;
 }
