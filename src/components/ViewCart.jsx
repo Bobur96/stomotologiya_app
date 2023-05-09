@@ -4,8 +4,8 @@ import Typography from '@mui/material/Typography';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import axios from 'axios';
 import { CircularProgress } from '@mui/material';
+import axios from 'axios';
 
 const ViewCart = ({ title, id }) => {
   const [item, setItem] = React.useState([]);
@@ -35,7 +35,7 @@ const ViewCart = ({ title, id }) => {
 
   return (
       <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div className="modal-dialog modal-dialog-scrollable">
+        <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">{title}ning Kartasi</h5>

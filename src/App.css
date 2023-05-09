@@ -187,7 +187,7 @@ label{
 }
 .list__item {
   display: block;
-  padding: 0 20px;
+  padding: 2px 20px;
   font-weight: 600;
   position: relative;
   border-bottom: 1px solid #e9e9e9;
@@ -195,7 +195,7 @@ label{
 .menu__btn {
   position: absolute;
   right: 0;
-  top: -1px;
+  top: 1px;
 }
 .check__group label{
   border-bottom: 1px solid rgb(124, 124, 124);

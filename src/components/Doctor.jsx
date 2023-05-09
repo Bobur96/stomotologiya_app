@@ -6,11 +6,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ViewCart from "./ViewCart";
 
+import Accordion from '@mui/material/Accordion';
+import Typography from '@mui/material/Typography';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 const inpt = [18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28];
 const inpt2 = [48, 47, 46, 45, 44, 43, 42, 41, 31, 32, 33, 34, 35, 36, 37, 38];
 
 const Doctor = () => {
-  
+  const [expanded, setExpanded] = React.useState(false);
   const queryAll = document.querySelectorAll.bind(document);
   const query = document.querySelector.bind(document);
 
@@ -45,6 +51,10 @@ const Doctor = () => {
     };
     response();
   }, []);
+
+  const handleChanges = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
   const handleSubmit = async () => {
     console.log("submit");
@@ -330,176 +340,79 @@ const Doctor = () => {
               <h4 className="text-center my-4">Informatsiya</h4>
 
               <div className="check__group py-2 ms-2 d-grid">
-                <div
-                  className="accordion accordion-flush"
-                  id="accordionFlushExample"
-                >
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="flush-headingOne">
-                      <button
-                        className="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapseOne"
-                        aria-expanded="false"
-                        aria-controls="flush-collapseOne"
-                      >
-                        Dental Complaints
-                      </button>
-                    </h2>
-                    <div
-                      id="flush-collapseOne"
-                      className="accordion-collapse collapse"
-                      aria-labelledby="flush-headingOne"
-                      data-bs-parent="#accordionFlushExample"
-                    >
-                      <div className="accordion-body">
-                        {dComplains.map((itm) => (
-                          <div className="list__item" key={itm.id}>
-                            <input
-                              type="checkbox"
-                              className={`details_inp complain inp_c${itm.id}`}
-                              value={itm.id}
-                            />
-                            <label>{itm.name}</label>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="flush-headingTwo">
-                      <button
-                        className="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapseTwo"
-                        aria-expanded="false"
-                        aria-controls="flush-collapseTwo"
-                      >
-                        CleaningAgents
-                      </button>
-                    </h2>
-                    <div
-                      id="flush-collapseTwo"
-                      className="accordion-collapse collapse"
-                      aria-labelledby="flush-headingTwo"
-                      data-bs-parent="#accordionFlushExample"
-                    >
-                      <div className="accordion-body">
-                        {cleaning.map((itm) => (
-                          <div className="list__item" key={itm.id}>
-                            <input
-                              type="checkbox"
-                              className={`details_inp cleaning inp_cl${itm.id}`}
-                              value={itm.id}
-                            />
-                            <label>{itm.name}</label>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="flush-headingThree">
-                      <button
-                        className="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapseThree"
-                        aria-expanded="false"
-                        aria-controls="flush-collapseThree"
-                      >
-                        Fillings
-                      </button>
-                    </h2>
-                    <div
-                      id="flush-collapseThree"
-                      className="accordion-collapse collapse"
-                      aria-labelledby="flush-headingThree"
-                      data-bs-parent="#accordionFlushExample"
-                    >
-                      <div className="accordion-body">
-                        {fillings.map((itm) => (
-                          <div className="list__item" key={itm.id}>
-                            <input
-                              type="checkbox"
-                              className={`details_inp filling inp_f${itm.id}`}
-                              value={itm.id}
-                            />
-                            <label>{itm.name}</label>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="flush-heading4">
-                      <button
-                        className="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapse4"
-                        aria-expanded="false"
-                        aria-controls="flush-collapse4"
-                      >
-                        Extractions
-                      </button>
-                    </h2>
-                    <div
-                      id="flush-collapse4"
-                      className="accordion-collapse collapse"
-                      aria-labelledby="flush-heading4"
-                      data-bs-parent="#accordionFlushExample"
-                    >
-                      <div className="accordion-body">
-                        {extractions.map((itm) => (
-                          <div className="list__item" key={itm.id}>
-                            <input
-                              type="checkbox"
-                              className={`details_inp extraction inp_ex${itm.id}`}
-                              value={itm.id}
-                            />
-                            <label>{itm.name}</label>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="flush-heading5">
-                      <button
-                        className="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapse5"
-                        aria-expanded="false"
-                        aria-controls="flush-collapse5"
-                      >
-                        Treatments
-                      </button>
-                    </h2>
-                    <div
-                      id="flush-collapse5"
-                      className="accordion-collapse collapse"
-                      aria-labelledby="flush-heading5"
-                      data-bs-parent="#accordionFlushExample"
-                    >
-                      <div className="accordion-body">
-                        {treatment?.map((itm) => (
-                          <div className="list__item" key={itm.id}>
-                            <input
-                              type="checkbox"
-                              className={`details_inp treatment inp_tr${itm.id}`}
-                              value={itm.id}
-                            />
-                            <label>{itm.name}</label>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                <div className="accordion accordion-flush" id="accordionFlushExample">
+                  <Accordion expanded={expanded === `panel1`} onChange={handleChanges(`panel1`)}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
+                      <Typography sx={{ width: '83%', flexShrink: 0 }}>Dental Complaints</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      {dComplains.map((itm) => (
+                        <div className="list__item" key={itm.id}>
+                          <input type="checkbox" value={itm.id}
+                            className={`details_inp complain inp_c${itm.id}`}
+                          />
+                          <label>{itm.name}</label>
+                        </div>
+                      ))}
+                    </AccordionDetails>
+                  </Accordion>
 
+                  <Accordion expanded={expanded === `panel2`} onChange={handleChanges(`panel2`)}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2bh-content" id="panel2bh-header">
+                      <Typography sx={{ width: '83%', flexShrink: 0 }}>Cleaning Agents</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      {cleaning.map((itm) => (
+                        <div className="list__item" key={itm.id}>
+                          <input type="checkbox" value={itm.id} className={`details_inp cleaning inp_cl${itm.id}`}/>
+                          <label>{itm.name}</label>
+                        </div>
+                      ))}
+                    </AccordionDetails>
+                  </Accordion>
+                 
+                  <Accordion expanded={expanded === `panel3`} onChange={handleChanges(`panel3`)}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel3bh-content" id="panel3bh-header">
+                      <Typography sx={{ width: '83%', flexShrink: 0 }}>Fillings</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      {fillings.map((itm) => (
+                        <div className="list__item" key={itm.id}>
+                          <input type="checkbox" value={itm.id} className={`details_inp filling inp_f${itm.id}`}/>
+                          <label>{itm.name}</label>
+                        </div>
+                      ))}
+                    </AccordionDetails>
+                  </Accordion>
+
+                  <Accordion expanded={expanded === `panel4`} onChange={handleChanges(`panel4`)}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel4bh-content" id="panel4bh-header">
+                      <Typography sx={{ width: '83%', flexShrink: 0 }}>Extractions</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      {extractions.map((itm) => (
+                        <div className="list__item" key={itm.id}>
+                          <input type="checkbox" value={itm.id} className={`details_inp extraction inp_ex${itm.id}`}/>
+                          <label>{itm.name}</label>
+                        </div>
+                      ))}
+                    </AccordionDetails>
+                  </Accordion>
+
+                  <Accordion expanded={expanded === `panel5`} onChange={handleChanges(`panel5`)}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel5bh-content" id="panel5bh-header">
+                      <Typography sx={{ width: '83%', flexShrink: 0 }}>Treatments</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      {treatment?.map((itm) => (
+                        <div className="list__item" key={itm.id}>
+                          <input type="checkbox" value={itm.id} className={`details_inp treatment inp_tr${itm.id}`}/>
+                          <label>{itm.name}</label>
+                        </div>
+                      ))}
+                    </AccordionDetails>
+                  </Accordion>
+                  
                 </div>
               </div>
             </FormGroup>
