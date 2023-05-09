@@ -5,6 +5,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { CircularProgress } from '@mui/material';
+import { Empty } from 'antd';
 import axios from 'axios';
 
 const ViewCart = ({ title, id }) => {
@@ -44,6 +45,7 @@ const ViewCart = ({ title, id }) => {
             <div className="modal-body">
               {
                 loading ? <div className='text-center py-4'><CircularProgress/></div> :
+                item.length === 0 ? <Empty /> :
                 item?.map((el, i) => (
                   <Accordion key={el.id} expanded={expanded === `panel${i+1}`} onChange={handleChanges(`panel${i+1}`)}>
                     <AccordionSummary
@@ -51,15 +53,15 @@ const ViewCart = ({ title, id }) => {
                       aria-controls="panel1bh-content"
                       id="panel1bh-header"
                     >
-                      <Typography sx={{ width: '33%', flexShrink: 0 }}>{el.date_of_treatment}</Typography>
-                      <Typography sx={{ color: 'text.secondary' }}>descriptions{el.description}</Typography>
+                      <Typography sx={{ width: '33%', flexShrink: 0 }}>{el.treatmentteeth.date_of_treatment}</Typography>
+                      <Typography sx={{ color: 'text.secondary' }}>descriptions{el.treatmentteeth.description}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                      <Typography>Attached ID : {el.attached_id}</Typography>
-                      <Typography>Created By : {el.created_by}</Typography>
-                      <Typography>Narxi : {el.price}</Typography>
-                      <Typography>Description : {el.description}</Typography>
-                      <Typography>Doctor Description: {el.doctor_description}</Typography>
+                      <Typography>Attached ID : {el.treatmentteeth.attached_id}</Typography>
+                      <Typography>Created By : {el.treatmentteeth.created_by}</Typography>
+                      <Typography>Narxi : {el.treatmentteeth.price}</Typography>
+                      <Typography>Description : {el.treatmentteeth.description}</Typography>
+                      <Typography>Doctor Description: {el.treatmentteeth.doctor_description}</Typography>
                     </AccordionDetails>
                   </Accordion>
                 ))

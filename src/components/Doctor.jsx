@@ -5,6 +5,7 @@ import FormGroup from "@mui/material/FormGroup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ViewCart from "./ViewCart";
+import UploadFile from "./UploadFile";
 
 import Accordion from '@mui/material/Accordion';
 import Typography from '@mui/material/Typography';
@@ -286,7 +287,6 @@ const Doctor = () => {
         </div>
 
         <div className="col-9 row reg_content">
-          
             <div className="col-8 reg_center tooth" style={{ background: "#8BB6B3" }}>
               {
                 errorMsg ? 
@@ -337,8 +337,7 @@ const Doctor = () => {
 
           <div className="col-4 reg_info">
             <FormGroup>
-              <h4 className="text-center my-4">Informatsiya</h4>
-
+              <h4 className="text-center my-2">Informatsiya</h4>
               <div className="check__group py-2 ms-2 d-grid">
                 <div className="accordion accordion-flush" id="accordionFlushExample">
                   <Accordion expanded={expanded === `panel1`} onChange={handleChanges(`panel1`)}>
@@ -347,11 +346,14 @@ const Doctor = () => {
                     </AccordionSummary>
                     <AccordionDetails>
                       {dComplains.map((itm) => (
-                        <div className="list__item" key={itm.id}>
+                        <div className="list__item d-flex align-items-center" key={itm.id}>
                           <input type="checkbox" value={itm.id}
                             className={`details_inp complain inp_c${itm.id}`}
                           />
-                          <label>{itm.name}</label>
+                          <div className="w-100 d-flex justify-content-between align-items-center">
+                            <label>{itm.name}</label>
+                            <span>{itm.price} so'm</span>
+                          </div>
                         </div>
                       ))}
                     </AccordionDetails>
@@ -363,9 +365,12 @@ const Doctor = () => {
                     </AccordionSummary>
                     <AccordionDetails>
                       {cleaning.map((itm) => (
-                        <div className="list__item" key={itm.id}>
+                        <div className="list__item d-flex align-items-center" key={itm.id}>
                           <input type="checkbox" value={itm.id} className={`details_inp cleaning inp_cl${itm.id}`}/>
-                          <label>{itm.name}</label>
+                          <div className="w-100 d-flex justify-content-between align-items-center">
+                            <label>{itm.name}</label>
+                            <span>{itm.price} so'm</span>
+                          </div>
                         </div>
                       ))}
                     </AccordionDetails>
@@ -377,9 +382,12 @@ const Doctor = () => {
                     </AccordionSummary>
                     <AccordionDetails>
                       {fillings.map((itm) => (
-                        <div className="list__item" key={itm.id}>
+                        <div className="list__item d-flex align-items-center" key={itm.id}>
                           <input type="checkbox" value={itm.id} className={`details_inp filling inp_f${itm.id}`}/>
-                          <label>{itm.name}</label>
+                          <div className="w-100 d-flex justify-content-between align-items-center">
+                            <label>{itm.name}</label>
+                            <span>{itm.price} so'm</span>
+                          </div>
                         </div>
                       ))}
                     </AccordionDetails>
@@ -391,9 +399,12 @@ const Doctor = () => {
                     </AccordionSummary>
                     <AccordionDetails>
                       {extractions.map((itm) => (
-                        <div className="list__item" key={itm.id}>
+                        <div className="list__item d-flex align-items-center" key={itm.id}>
                           <input type="checkbox" value={itm.id} className={`details_inp extraction inp_ex${itm.id}`}/>
-                          <label>{itm.name}</label>
+                          <div className="w-100 d-flex justify-content-between align-items-center">
+                            <label>{itm.name}</label>
+                            <span>{itm.price} so'm</span>
+                          </div>
                         </div>
                       ))}
                     </AccordionDetails>
@@ -405,14 +416,23 @@ const Doctor = () => {
                     </AccordionSummary>
                     <AccordionDetails>
                       {treatment?.map((itm) => (
-                        <div className="list__item" key={itm.id}>
+                        <div className="list__item d-flex align-items-center" key={itm.id}>
                           <input type="checkbox" value={itm.id} className={`details_inp treatment inp_tr${itm.id}`}/>
-                          <label>{itm.name}</label>
+                          <div className="w-100 d-flex justify-content-between align-items-center">
+                            <label>{itm.name}</label>
+                            <span>{itm.price} so'm</span>
+                          </div>
                         </div>
                       ))}
                     </AccordionDetails>
                   </Accordion>
-                  
+
+                  <UploadFile/>
+                  <textarea placeholder="Qayd yozish uchun" class="form-control" id="textarea" rows="2"></textarea>
+                  <div className="d-flex justify-content-between mt-3">
+                    <label for="total_price">Total price</label>
+                    <input type="text" style={{height: "30px", width: "200px"}} id="total_price" className="form-control" placeholder="100 000" />
+                  </div>
                 </div>
               </div>
             </FormGroup>

@@ -153,7 +153,7 @@ const Register = () => {
                   <span className="list__item patient" key={i}>
                     <input type="radio" name="patient" id={`${item.id}`} value={item.id} />
                     <label htmlFor={`${item.id}`}>{item.first_name+'  '+item.last_name}</label>
-                    <div className="menu__btn">
+                    {/* <div className="menu__btn">
                       <IconButton aria-haspopup="true" onClick={handleClick}>
                         <MoreVertIcon />
                       </IconButton>
@@ -161,7 +161,7 @@ const Register = () => {
                           <MenuItem>select</MenuItem>
                           <MenuItem>View karta</MenuItem>
                       </Menu>
-                    </div>
+                    </div> */}
                   </span>
                 ))
               }
@@ -245,19 +245,19 @@ const Register = () => {
               <form action="" className="w-100 py-4 px-3">
                 <div className="info_item">
                   <label htmlFor="name1">First name</label>
-                  <input type="text" id="first_name" />
+                  <input type="text" className="form-control" id="first_name" />
                 </div>
                 <div className="info_item">
                   <label htmlFor="last_name">Last name</label>
-                  <input type="text" id="last_name" />
+                  <input type="text" className="form-control" id="last_name" />
                 </div>
                 <div className="info_item">
                   <label htmlFor="phone">Phone</label>
-                  <input type="text" id="phone" />
+                  <input type="text" className="form-control" id="phone" />
                 </div>
                 <div className="info_item">
                   <label htmlFor="address">Address</label>
-                  <input type="text" id="address" />
+                  <input type="text" className="form-control" id="address" />
                 </div>
               </form>
             </div>

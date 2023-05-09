@@ -40,6 +40,10 @@ a.active{
 .details_inp {
   margin-right: 8px;
 }
+.check__group {
+  max-height: 484px;
+  overflow-y: auto;
+}
 .check__group .list__item label{
   border: none;
 }
@@ -60,4 +64,16 @@ a.active{
   background-color: rgb(59, 192, 59);
   border: 1px solid rgb(59, 192, 59);
   color: white;
+}
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
+.check__group .list__item span {
+  color: #aaa;
+  font-size: small;
 }
