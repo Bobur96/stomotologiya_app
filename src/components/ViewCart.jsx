@@ -56,12 +56,17 @@ const ViewCart = ({ title, id }) => {
                       <Typography sx={{ width: '33%', flexShrink: 0 }}>{el.treatmentteeth.date_of_treatment}</Typography>
                       <Typography sx={{ color: 'text.secondary' }}>descriptions{el.treatmentteeth.description}</Typography>
                     </AccordionSummary>
-                    <AccordionDetails>
-                      <Typography>Attached ID : {el.treatmentteeth.attached_id}</Typography>
-                      <Typography>Created By : {el.treatmentteeth.created_by}</Typography>
-                      <Typography>Narxi : {el.treatmentteeth.price}</Typography>
-                      <Typography>Description : {el.treatmentteeth.description}</Typography>
-                      <Typography>Doctor Description: {el.treatmentteeth.doctor_description}</Typography>
+                    <AccordionDetails className='karta_info'>
+                      <Typography><span>Attached ID:</span> {el.treatmentteeth.attached_id}</Typography>
+                      <Typography><span>Tishlar:</span> {el.treatment_history.tooth_id.map(id => id +", ")}</Typography>
+                      <Typography><span>Kasallik:</span> {el.treatment_history.complaint_id.map(el => el.name+"  "+el.price+" so'm")}</Typography>
+                      <Typography><span>Treatments:</span> {el.treatment_history.treatment_id.map(el => el.name+"  "+el.price+" so'm")}</Typography>
+                      <Typography><span>Fillings:</span> {el.treatment_history.filling_id.map(el => el.name+"  "+el.price+" so'm")}</Typography>
+                      <Typography><span>Tozalovchi vozisatalar:</span> {el.treatment_history.cleaning_agent_id.map(el => el.name+"  "+el.price+" so'm")}</Typography>
+                      <Typography><span>Extractions:</span> {el.treatment_history.extraction_id.map(el => el.name+"  "+el.price+" so'm")}</Typography>
+                      <Typography><span>Narxi:</span> {el.treatmentteeth.price}</Typography>
+                      {el.treatmentteeth.description && <Typography>Description : {el.treatmentteeth.description}</Typography>}
+                      {el.treatmentteeth.doctor_description && <Typography>Doctor Description : {el.treatmentteeth.doctor_description}</Typography>}
                     </AccordionDetails>
                   </Accordion>
                 ))

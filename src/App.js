@@ -4,6 +4,7 @@ import Register from './pages/Registers';
 import Login from "./components/Login";
 import Doctor from './pages/Doctors';
 import './App.css';
+import Admin from './pages/Admins';
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
           <Route path='/' element={<Login />}/>
           <Route path='/register' element={<Register />}/>
           <Route path='/doctor' element={<Doctor />}/>
+          <Route path='/admin' element={<Admin />}/>
           <Route path='/navbat' element={<p>Navbat</p>}/>
         </Routes>
       </div>

@@ -1,3 +1,78 @@
+
+.register {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 99.1vw;
+  height: 80vh;
+}
+
+input[type="radio"] {
+  margin-right: 8px;
+}
+a{
+  display: flex;
+  margin: 0 4px;
+  padding: 6px 13px;
+  border-radius: 4px;
+  align-self: center;
+  color: white !important;
+  text-decoration: none !important;
+}
+.header a.active{
+  color: yellow !important;
+  background-color: black !important;
+}
+
+.details_inp {
+  margin-right: 8px;
+}
+.check__group {
+  max-height: 484px;
+  overflow-y: auto;
+}
+.check__group .list__item label{
+  border: none;
+}
+.error {
+  font-size: 17px;
+  color: red;
+  font-weight: bold;
+}
+.btn_cart {
+  border: 1px solid green;
+  font-size: 12px;
+  border-radius: 3px;
+  padding: 3px 4px;
+  cursor: pointer;
+  color: green;
+}
+.register .btn_cart:hover {
+  background-color: rgb(59, 192, 59);
+  border: 1px solid rgb(59, 192, 59);
+  color: white;
+}
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
+.check__group .list__item span {
+  color: #aaa;
+  font-size: small;
+}
+.karta_info span {
+  display: inline-block;
+  width: 190px !important;
+}
+.karta_info .css-ahj2mt-MuiTypography-root {
+  font-size: 15px;
+  font-weight: 500 !important;
+}
+
 .list_cont{
   height: 561px;
   position: relative;

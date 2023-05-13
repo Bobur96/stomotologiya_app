@@ -5,7 +5,6 @@ import FormGroup from "@mui/material/FormGroup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ViewCart from "./ViewCart";
-import UploadFile from "./UploadFile";
 
 import Accordion from '@mui/material/Accordion';
 import Typography from '@mui/material/Typography';
@@ -427,7 +426,7 @@ const Doctor = () => {
                     </AccordionDetails>
                   </Accordion>
 
-                  <UploadFile/>
+                  <input type="file" className="form-control my-3" multiple/>
                   <textarea placeholder="Qayd yozish uchun" class="form-control" id="textarea" rows="2"></textarea>
                   <div className="d-flex justify-content-between mt-3">
                     <label for="total_price">Total price</label>

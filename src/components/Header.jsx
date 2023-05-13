@@ -22,7 +22,7 @@ function Header() {
   return (
     <>
       {token ? (
-        <AppBar position="static">
+        <AppBar position="static" className="header">
           <Container maxWidth="xl">
             <Toolbar disableGutters>
               <AccountBalanceIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
