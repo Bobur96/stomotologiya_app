@@ -45,7 +45,7 @@ const ViewCart = ({ title, id }) => {
             <div className="modal-body">
               {
                 loading ? <div className='text-center py-4'><CircularProgress/></div> :
-                item.length === 0 ? <Empty /> :
+                item.length === 0 ? <div className='text-center py-1'><Empty /></div> :
                 item?.map((el, i) => (
                   <Accordion key={el.id} expanded={expanded === `panel${i+1}`} onChange={handleChanges(`panel${i+1}`)}>
                     <AccordionSummary

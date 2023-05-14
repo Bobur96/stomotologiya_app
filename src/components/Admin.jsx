@@ -1,62 +1,105 @@
-import React from "react";
-import './style.css'
+import React, { useEffect, useState } from "react";
+import "./style.css";
+import { useNavigate } from "react-router-dom";
+import AdminMain from "./AdminMain";
+import axios from "axios";
+import UserAdd from "./UserAdd";
 
 const Admin = () => {
-  const allSideMenu = document.querySelectorAll("#sidebar .side-menu.top li a");
-  // allSideMenu.forEach((item) => {
-  //   const li = item.parentElement;
 
-  //   item.addEventListener("click", function () {
-  //     allSideMenu.forEach((i) => {
-  //       i.parentElement.classList.remove("active");
-  //     });
-  //     li.classList.add("active");
-  //   });
-  // });
+  let adminItem = []
+  let registerItem = []
+  const [users, setUsers] = useState([])
+  const [loading, setLoading] = useState(null)
+  const [adminPath, setAdminPath] = useState('')
+  const [doctorItem, setDoctorItem] = useState([])
 
   const handleSidebar = (e) => {
-    console.log(e.target)
-    console.log(allSideMenu)
-    e.preventDefault();
-    allSideMenu.forEach((i) => {
-      i.parentElement.classList.remove("active");
-      console.log(i.parentElement.classList)
+    const allSideMenu = document.querySelectorAll("#sidebar .side-menu.top li");
+    allSideMenu.forEach((item) => {
+      item.classList.remove("active");
     });
     e.target.parentElement.classList.add("active");
-  }
+    e.target.parentElement.parentElement.classList.add("active");
 
+    if(e.target.textContent === 'Dashboard') setAdminPath('')
+    if(e.target.textContent === 'Add User') setAdminPath('Add User')
+    if(e.target.textContent === 'Add Items') setAdminPath('Add Items')
+  };
+
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("role");
+    navigate('/')
+  };
+
+  const getDoctors = () => {
+    axios(`${process.env.REACT_APP_API_URL}/admin/get_doctors`,
+      { headers: { token: sessionStorage.getItem("token") } }
+    ).then((res) => setDoctorItem(res.data))
+      .catch((err) => console.log(err));
+  };
+
+  const getUsers = () => {
+    adminItem = []
+    registerItem = []
+    axios(`${process.env.REACT_APP_API_URL}/admin/get/users`,
+      { headers: { token: sessionStorage.getItem("token") } }
+    ).then((res) => {
+      console.log(res.data)
+      setUsers(res.data)
+      res.data?.forEach(el => {
+        if(el.role === 'admin') { adminItem.push(el) }
+        if(el.role === 'register') registerItem.push(el)
+      })
+    }).catch((err) => console.log(err));
+  };
+
+  useEffect(async()=>{
+    setLoading(true)
+    await getUsers()
+    await getDoctors()
+    setLoading(false)
+  }, [])
 
   return (
-    <div style={{background: "transparent", color: "#111"}}>
+    <div>
       {/* <!-- SIDEBAR --> */}
-      <section id="sidebar" style={{background: "red", color: "green"}}>
-        <a href="#" onClick={(e)=>handleSidebar(e)} className="brand">
+      <section id="sidebar" style={{ background: "red", color: "green" }}>
+        <a href="#" className="brand">
           <i className="bx bxs-smile"></i>
           <span className="text">AdminHub</span>
         </a>
         <ul className="side-menu top">
           <li className="active">
-            <a href="#" onClick={(e)=>handleSidebar(e)}>
+            <a href="#" onClick={(e) => handleSidebar(e)}>
               <i className="bx bxs-dashboard"></i>
               <span className="text">Dashboard</span>
             </a>
           </li>
           <li>
-            <a href="#" onClick={(e)=>handleSidebar(e)}>
+            <a href="#" onClick={(e) => handleSidebar(e)}>
               <i className="bx bxs-shopping-bag-alt"></i>
-              <span className="text">My Store</span>
+              <span className="text">Add User</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" onClick={(e) => handleSidebar(e)}>
+              <i className="bx bxs-shopping-bag-alt"></i>
+              <span className="text">Add Items</span>
             </a>
           </li>
         </ul>
         <ul className="side-menu">
           <li>
-            <a href="#" onClick={(e)=>handleSidebar(e)}>
+            <a href="#" onClick={(e) => handleSidebar(e)}>
               <i className="bx bxs-cog"></i>
               <span className="text">Settings</span>
             </a>
           </li>
           <li>
-            <a href="#" onClick={(e)=>handleSidebar(e)} className="logout">
+            <a href="#" onClick={() => handleLogout()} className="logout">
               <i className="bx bxs-log-out-circle"></i>
               <span className="text">Logout</span>
             </a>
@@ -65,9 +108,9 @@ const Admin = () => {
       </section>
       {/* <!-- SIDEBAR --> */}
 
-      {/* <!-- CONTENT --> */}
+
       <section id="content">
-        {/* <!-- NAVBAR --> */}
+
         <nav>
           <i className="bx bx-menu"></i>
           <a href="#" className="nav-link">
@@ -84,160 +127,14 @@ const Admin = () => {
           <input type="checkbox" id="switch-mode" hidden />
           <label htmlFor="switch-mode" className="switch-mode"></label>
         </nav>
-        {/* <!-- NAVBAR --> */}
-
-        {/* <!-- MAIN --> */}
-        <main>
-          <div className="head-title">
-            <div className="left">
-              <h1>Dashboard</h1>
-              <ul className="breadcrumb">
-                <li>
-                  <a href="#">Dashboard</a>
-                </li>
-                <li>
-                  <i className="bx bx-chevron-right"></i>
-                </li>
-                <li>
-                  <a className="active" href="#">
-                    Home
-                  </a>
-                </li>
-              </ul>
-            </div>
-            {/* <a href="#" className="btn-download">
-              <i className="bx bxs-cloud-download"></i>
-              <span className="text">Download PDF</span>
-            </a> */}
-          </div>
-
-          <ul className="box-info">
-            <li>
-              <i className="bx bxs-calendar-check"></i>
-              <span className="text">
-                <h3>1020</h3>
-                <p>New Order</p>
-              </span>
-            </li>
-            <li>
-              <i className="bx bxs-group"></i>
-              <span className="text">
-                <h3>2834</h3>
-                <p>Visitors</p>
-              </span>
-            </li>
-            <li>
-              <i className="bx bxs-dollar-circle"></i>
-              <span className="text">
-                <h3>$2543</h3>
-                <p>Total Sales</p>
-              </span>
-            </li>
-          </ul>
-
-          <div className="table-data">
-            <div className="order">
-              <div className="head">
-                <h3>Recent Orders</h3>
-                <i className="bx bx-search"></i>
-                <i className="bx bx-filter"></i>
-              </div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>User</th>
-                    <th>Date Order</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <img src="img/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td>
-                      <span className="status completed">Completed</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="img/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td>
-                      <span className="status pending">Pending</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="img/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td>
-                      <span className="status process">Process</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="img/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td>
-                      <span className="status pending">Pending</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="img/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td>
-                      <span className="status completed">Completed</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="todo">
-              <div className="head">
-                <h3>Todos</h3>
-                <i className="bx bx-plus"></i>
-                <i className="bx bx-filter"></i>
-              </div>
-              <ul className="todo-list">
-                <li className="completed">
-                  <p>Todo List</p>
-                  <i className="bx bx-dots-vertical-rounded"></i>
-                </li>
-                <li className="completed">
-                  <p>Todo List</p>
-                  <i className="bx bx-dots-vertical-rounded"></i>
-                </li>
-                <li className="not-completed">
-                  <p>Todo List</p>
-                  <i className="bx bx-dots-vertical-rounded"></i>
-                </li>
-                <li className="completed">
-                  <p>Todo List</p>
-                  <i className="bx bx-dots-vertical-rounded"></i>
-                </li>
-                <li className="not-completed">
-                  <p>Todo List</p>
-                  <i className="bx bx-dots-vertical-rounded"></i>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </main>
-        {/* <!-- MAIN --> */}
+        {
+          adminPath === '' ? <AdminMain doc={doctorItem} adm={adminItem} reg={registerItem} users={users}/> :
+          adminPath === 'Add User' ? <UserAdd/> :
+          adminPath === 'Add Items' ? <p>Add Items</p> : ""
+          
+        }
       </section>
-      {/* <!-- CONTENT --> */}
+
     </div>
   );
 };
