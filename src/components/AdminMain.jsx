@@ -73,7 +73,7 @@ const AdminMain = ({doc, adm, reg, users}) => {
                 users.map(el =>(
                   <tr key={el.id}>
                     <td>
-                      <img src="img/people.png" />
+                      <img src="img/user.png" />
                       <p>{el.first_name +" "+ el.last_name}</p>
                     </td>
                     <td>{el.created_date?.slice(0,10)}</td>

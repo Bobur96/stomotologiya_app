@@ -102,6 +102,12 @@ const Doctor = () => {
       complaint_id: deteilAnswer,
     };
 
+    const prices = {
+      treatmentteeth_id: treatmentteeth,
+      price: query('#total_price').value,
+      doctor_description: query('#description').value
+    }
+
     if (historyId) {
       console.log(body)
       await axios.put(`${process.env.REACT_APP_API_URL}/doctor/update_history?treatmentteeth_id=${treatmentteeth}`,
@@ -120,6 +126,15 @@ const Doctor = () => {
           queryAll("input").forEach((el) => (el.checked = false));
         }).catch((err) => toast.error("Ann error occured!"));
     }
+    
+    await axios.put(`${process.env.REACT_APP_API_URL}/doctor/update_price`, prices , { 
+      headers: { token: sessionStorage.getItem("token") }}
+    ).then((res) => { 
+      query('#total_price').value = '';
+      query('#description').value = '';
+      query('#file').value = '';
+    })
+    .catch((err) => toast.error("Ann error occured!"));
   };
 
   const getPatiens = () => {
@@ -426,8 +441,8 @@ const Doctor = () => {
                     </AccordionDetails>
                   </Accordion>
 
-                  <input type="file" className="form-control my-3" multiple/>
-                  <textarea placeholder="Qayd yozish uchun" class="form-control" id="textarea" rows="2"></textarea>
+                  <input type="file" className="form-control my-3" multiple id="file"/>
+                  <textarea placeholder="Qayd yozish uchun" class="form-control" id="description" rows="2"></textarea>
                   <div className="d-flex justify-content-between mt-3">
                     <label for="total_price">Total price</label>
                     <input type="text" style={{height: "30px", width: "200px"}} id="total_price" className="form-control" placeholder="100 000" />

@@ -4,15 +4,16 @@ import { useNavigate } from "react-router-dom";
 import AdminMain from "./AdminMain";
 import axios from "axios";
 import UserAdd from "./UserAdd";
+import CreateItems from "./CreateItems";
 
 const Admin = () => {
 
-  let adminItem = []
-  let registerItem = []
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(null)
   const [adminPath, setAdminPath] = useState('')
+  const [adminItem, setAdminItem] = useState([])
   const [doctorItem, setDoctorItem] = useState([])
+  const [registerItem, setRegisterItem] = useState([])
 
   const handleSidebar = (e) => {
     const allSideMenu = document.querySelectorAll("#sidebar .side-menu.top li");
@@ -41,25 +42,37 @@ const Admin = () => {
       .catch((err) => console.log(err));
   };
 
-  const getUsers = () => {
-    adminItem = []
-    registerItem = []
-    axios(`${process.env.REACT_APP_API_URL}/admin/get/users`,
+  const getAdmins = () => {
+    axios(`${process.env.REACT_APP_API_URL}/admin/get_admins`,
       { headers: { token: sessionStorage.getItem("token") } }
-    ).then((res) => {
-      console.log(res.data)
-      setUsers(res.data)
-      res.data?.forEach(el => {
-        if(el.role === 'admin') { adminItem.push(el) }
-        if(el.role === 'register') registerItem.push(el)
-      })
-    }).catch((err) => console.log(err));
+    ).then((res) => setAdminItem(res.data))
+      .catch((err) => console.log(err));
   };
 
-  useEffect(async()=>{
-    setLoading(true)
+  const getRegisters = () => {
+    axios(`${process.env.REACT_APP_API_URL}/admin/get_register`,
+      { headers: { token: sessionStorage.getItem("token") } }
+    ).then((res) => setRegisterItem(res.data))
+      .catch((err) => console.log(err));
+  };
+
+  const getUsers = () => {
+    axios(`${process.env.REACT_APP_API_URL}/admin/get/users`,
+      { headers: { token: sessionStorage.getItem("token") } }
+    ).then((res) => setUsers(res.data))
+    .catch((err) => console.log(err));
+  };
+
+  const getAllData = async () => {
     await getUsers()
+    await getAdmins()
     await getDoctors()
+    await getRegisters()
+  }
+
+  useEffect(()=>{
+    setLoading(true)
+    getAllData()
     setLoading(false)
   }, [])
 
@@ -110,7 +123,6 @@ const Admin = () => {
 
 
       <section id="content">
-
         <nav>
           <i className="bx bx-menu"></i>
           <a href="#" className="nav-link">
@@ -129,8 +141,8 @@ const Admin = () => {
         </nav>
         {
           adminPath === '' ? <AdminMain doc={doctorItem} adm={adminItem} reg={registerItem} users={users}/> :
-          adminPath === 'Add User' ? <UserAdd/> :
-          adminPath === 'Add Items' ? <p>Add Items</p> : ""
+          adminPath === 'Add User' ? <UserAdd getAll={getAllData}/> :
+          adminPath === 'Add Items' ? <CreateItems/> : ""
           
         }
       </section>

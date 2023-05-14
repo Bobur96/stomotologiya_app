@@ -1,9 +1,10 @@
 import { Button, CircularProgress, Grid } from "@mui/material";
+import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
-const UserAdd = () => {
+const UserAdd = ({getAll}) => {
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -14,15 +15,12 @@ const UserAdd = () => {
 
   const Submit = (data) => {
     setLoading(true);
-    fetch("https://tts-cms-apis.herokuapp.com/send-email", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then((res) => {
-        toast.success("Successfully sended!");
+    axios.post(`${process.env.REACT_APP_API_URL}/admin/user/create`, data, { 
+      headers: { token: sessionStorage.getItem("token") } }
+    ).then((res) => {
+        toast.success("Successfully created!");
         setLoading(false);
-        reset();
+        reset(); getAll();
       })
       .catch((error) => {
         toast.error("An Error occurred!");
@@ -32,12 +30,13 @@ const UserAdd = () => {
 
   return (
     <div className="container px-5">
+      <ToastContainer/>
       <form
         onSubmit={handleSubmit(Submit)}
         className="container py-2 example row g-3"
       >
         <Grid className="modal-header py-2 px-0">
-          <h4>Add User</h4>
+          <h4>Create User</h4>
         </Grid>
         <Grid container direction="column" spacing={2}>
           <Grid
@@ -107,7 +106,7 @@ const UserAdd = () => {
                 }
                 {...register("password", {
                   required: true,
-                  pattern: /^[A-Za-z' ]*$/,
+                  pattern: /^[A-Za-z0-9'$# ]*$/,
                 })}
               />
             </Grid>
@@ -119,7 +118,6 @@ const UserAdd = () => {
                   errors.address ? "is-invalid form-control" : "form-control"
                 }
                 {...register("address", {
-                  required: true,
                   pattern: /^[A-Za-z' ]*$/,
                 })}
               />
@@ -134,7 +132,6 @@ const UserAdd = () => {
                     : "form-control"
                 }
                 {...register("phone_number", {
-                  required: true,
                   pattern: /^[A-Za-z0-9'+ ]*$/,
                 })}
               />
